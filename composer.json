@@ -1,0 +1,34 @@
+{
+	"name": "chillerlan/php-geojson-helpers",
+	"description": " PHP 7.2+",
+	"homepage": "https://github.com/chillerlan/php-geojson-helpers",
+	"license": "MIT",
+	"keywords": [
+		"geojson", "helper"
+	],
+	"authors": [
+		{
+			"name": "Smiley",
+			"email": "smiley@chillerlan.net",
+			"homepage": "https://github.com/codemasher"
+		}
+	],
+	"require": {
+		"php": "^7.2",
+		"ext-json": "*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^7.5"
+	},
+	"autoload": {
+		"psr-4": {
+			"chillerlan\\GeoJSON\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"chillerlan\\GeoJSONTest\\": "tests/",
+			"chillerlan\\GeoJSONExamples\\": "examples/"
+		}
+	}
+}
