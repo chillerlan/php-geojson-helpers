@@ -17,7 +17,6 @@ use function array_fill, array_keys, array_pop, array_push, array_values, count,
 class PolylineSimplifyer{
 
 	protected array $coords;
-	protected array $coordKeys;
 
 	/**
 	 * PolylineSimplifyer constructor.
@@ -34,12 +33,6 @@ class PolylineSimplifyer{
 
 		if(count($coords) < 2){
 			throw new GeoJSONException('not enough points');
-		}
-
-		$this->coordKeys = array_keys($this->coords[0]);
-
-		if(count($this->coordKeys) < 2){
-			throw new GeoJSONException('invalid coordinate keys');
 		}
 
 		foreach($this->coords as $coord){
