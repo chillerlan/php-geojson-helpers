@@ -16,7 +16,7 @@
 [packagist]: https://packagist.org/packages/chillerlan/php-geojson-helpers
 [license-badge]: https://img.shields.io/github/license/chillerlan/php-geojson-helpers.svg
 [license]: https://github.com/chillerlan/php-geojson-helpers/blob/master/LICENSE
-[gh-action-badge]: https://img.shields.io/github/actions/workflow/status/chillerlan/php-geojson-helpers/tests.yml?branch=main&logo=github
+[gh-action-badge]: https://img.shields.io/github/actions/workflow/status/chillerlan/php-geojson-helpers/tests.yml?branch=master&logo=github
 [gh-action]: https://github.com/chillerlan/php-geojson-helpers/actions/workflows/tests.yml?query=branch%3Amaster
 [coverage-badge]: https://img.shields.io/codecov/c/github/chillerlan/php-geojson-helpers.svg?logo=codecov
 [coverage]: https://codecov.io/github/chillerlan/php-geojson-helpers
@@ -29,6 +29,7 @@
 
 ## Requirements
 - PHP 7.4+
+  - [`ext-json`](https://www.php.net/manual/book.json.php)
 
 ## Installation
 **requires [composer](https://getcomposer.org)**
@@ -42,12 +43,6 @@
 	}
 }
 ```
-
-### Manual installation
-Download the desired version of the package from [master](https://github.com/chillerlan/php-geojson-helpers/archive/master.zip) or
-[release](https://github.com/chillerlan/php-geojson-helpers/releases) and extract the contents to your project folder.  After that:
-- run `composer install` to install the required dependencies and generate `/vendor/autoload.php`.
-- if you use a custom autoloader, point the namespace `chillerlan\GeoJSON` to the folder `src` of the package
 
 Profit!
 
@@ -65,6 +60,10 @@ $featureCollection->addFeatures([$feature, /* ... more features ... */]);
 
 // create the GeoJSON, feed leaflet
 $json = $featureCollection->toJSON();
+
+// as of v2.x via JsonSerializable
+$json = json_encode($featureCollection);
+
 ```
 
 ```json
