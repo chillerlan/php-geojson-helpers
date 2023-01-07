@@ -2,9 +2,7 @@
 /**
  * Class FeatureTest
  *
- * @filesource   FeatureTest.php
  * @created      25.06.2018
- * @package      chillerlan\GeoJSONTest
  * @author       smiley <smiley@chillerlan.net>
  * @copyright    2018 smiley
  * @license      MIT
@@ -12,21 +10,18 @@
 
 namespace chillerlan\GeoJSONTest;
 
-use chillerlan\GeoJSON\Feature;
+use chillerlan\GeoJSON\{Feature, GeoJSONException};
 use PHPUnit\Framework\TestCase;
 
 class FeatureTest extends TestCase{
 
-	/**
-	 * @var \chillerlan\GeoJSON\Feature
-	 */
-	protected $geoJSONFeature;
+	protected Feature $geoJSONFeature;
 
-	protected function setUp(){
+	protected function setUp():void{
 		$this->geoJSONFeature = new Feature;
 	}
 
-	public function testToArray(){
+	public function testToArray():void{
 
 		$id    = 123;
 		$type  = 'Point';
@@ -40,8 +35,8 @@ class FeatureTest extends TestCase{
 
 		$arr = $this->geoJSONFeature->toArray();
 
-#		$this->assertSame($id, $arr['id']);
-		$this->assertSame($id, $arr['properties']['id']);
+#		$this->assertSame($id, $arr['id']); // gmaps
+		$this->assertSame($id, $arr['properties']['id']); // leaflet
 		$this->assertSame('val1', $arr['properties']['prop1']);
 		$this->assertSame('Feature', $arr['type']);
 		$this->assertSame($bbox, $arr['bbox']);
@@ -53,51 +48,45 @@ class FeatureTest extends TestCase{
 		$this->assertSame('{"type":"Feature","geometry":{"type":"Point","coordinates":[10,10]},"bbox":[-10,-10,10,10],"properties":{"prop1":"val1","id":123}}', $json);
 	}
 
-	/**
-	 * @expectedException \chillerlan\GeoJSON\GeoJSONException
-	 * @expectedExceptionMessage got coords but no feature type
-	 */
-	public function testConstructNoType(){
+	public function testConstructNoType():void{
+		$this->expectException(GeoJSONException::class);
+		$this->expectExceptionMessage('got coords but no feature type');
+		/** @phan-suppress-next-line PhanNoopNew */
 		new Feature([0,0]);
 	}
 
-	/**
-	 * @expectedException \chillerlan\GeoJSON\GeoJSONException
-	 * @expectedExceptionMessage invalid coords array
-	 */
-	public function testSetGeometryInvalidCoords(){
+	public function testSetGeometryInvalidCoords():void{
+		$this->expectException(GeoJSONException::class);
+		$this->expectExceptionMessage('invalid coords array');
+
 		$this->geoJSONFeature->setGeometry([], '');
 	}
 
-	/**
-	 * @expectedException \chillerlan\GeoJSON\GeoJSONException
-	 * @expectedExceptionMessage invalid geometry type
-	 */
-	public function testSetGeometryInvalidType(){
+	public function testSetGeometryInvalidType():void{
+		$this->expectException(GeoJSONException::class);
+		$this->expectExceptionMessage('invalid geometry type');
+
 		$this->geoJSONFeature->setGeometry([0,0], '');
 	}
 
-	/**
-	 * @expectedException \chillerlan\GeoJSON\GeoJSONException
-	 * @expectedExceptionMessage invalid id
-	 */
-	public function testSetIDInvalidId(){
+	public function testSetIDInvalidId():void{
+		$this->expectException(GeoJSONException::class);
+		$this->expectExceptionMessage('invalid id');
+		/** @phan-suppress-next-line PhanTypeMismatchArgumentProbablyReal */
 		$this->geoJSONFeature->setID(null);
 	}
 
-	/**
-	 * @expectedException \chillerlan\GeoJSON\GeoJSONException
-	 * @expectedExceptionMessage invalid bounding box array
-	 */
-	public function testSetBboxInvalidBox(){
+	public function testSetBboxInvalidBox():void{
+		$this->expectException(GeoJSONException::class);
+		$this->expectExceptionMessage('invalid bounding box array');
+
 		$this->geoJSONFeature->setBbox([]);
 	}
 
-	/**
-	 * @expectedException \chillerlan\GeoJSON\GeoJSONException
-	 * @expectedExceptionMessage invalid feature
-	 */
-	public function testToArrayInvalidFeature(){
+	public function testToArrayInvalidFeature():void{
+		$this->expectException(GeoJSONException::class);
+		$this->expectExceptionMessage('invalid feature');
+
 		$this->geoJSONFeature->toArray();
 	}
 

@@ -4,9 +4,7 @@
  *
  * @link https://tools.ietf.org/html/rfc7946
  *
- * @filesource   FeatureCollection.php
  * @created      25.06.2018
- * @package      chillerlan\GeoJSON
  * @author       smiley <smiley@chillerlan.net>
  * @copyright    2018 smiley
  * @license      MIT
@@ -14,12 +12,11 @@
 
 namespace chillerlan\GeoJSON;
 
+use function array_map;
+
 class FeatureCollection extends GeoJSONAbstract{
 
-	/**
-	 * @var array
-	 */
-	protected $features = [];
+	protected array $features = [];
 
 	/**
 	 * FeatureCollection constructor.
@@ -80,9 +77,7 @@ class FeatureCollection extends GeoJSONAbstract{
 			$arr['bbox'] = $this->bbox;
 		}
 
-		$arr['features'] = array_map(function(Feature $feature){
-			return $feature->toArray();
-		}, $this->features);
+		$arr['features'] = array_map(fn(Feature $feature):array => $feature->toArray(), $this->features);
 
 		return $arr;
 	}

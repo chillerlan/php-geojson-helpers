@@ -2,9 +2,7 @@
 /**
  * Class GeoJSONAbstract
  *
- * @filesource   GeoJSONAbstract.php
  * @created      14.02.2019
- * @package      chillerlan\GeoJSON
  * @author       smiley <smiley@chillerlan.net>
  * @copyright    2019 smiley
  * @license      MIT
@@ -12,17 +10,16 @@
 
 namespace chillerlan\GeoJSON;
 
-abstract class GeoJSONAbstract{
+use JsonSerializable;
+use function count;
+use function in_array;
+use function json_encode;
+
+abstract class GeoJSONAbstract implements JsonSerializable{
+
+	protected array $bbox;
 
 	/**
-	 * @var array
-	 */
-	protected $bbox;
-
-	/**
-	 * @param array $bbox
-	 *
-	 * @return \chillerlan\GeoJSON\GeoJSONAbstract
 	 * @throws \chillerlan\GeoJSON\GeoJSONException
 	 */
 	public function setBbox(array $bbox):GeoJSONAbstract{
@@ -37,17 +34,22 @@ abstract class GeoJSONAbstract{
 	}
 
 	/**
-	 * @return array
+	 *
 	 */
 	abstract public function toArray():array;
 
 	/**
-	 * @param int|null $options
 	 *
-	 * @return string
 	 */
 	public function toJSON(int $options = null):string{
 		return json_encode($this->toArray(), $options ?? 0);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function jsonSerialize():array{
+		return $this->toArray();
 	}
 
 }

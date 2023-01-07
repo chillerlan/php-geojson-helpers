@@ -4,15 +4,17 @@
  *
  * @link https://tools.ietf.org/html/rfc7946
  *
- * @filesource   Feature.php
  * @created      25.06.2018
- * @package      chillerlan\GeoJSON
  * @author       smiley <smiley@chillerlan.net>
  * @copyright    2018 smiley
  * @license      MIT
  */
 
 namespace chillerlan\GeoJSON;
+
+use function in_array;
+use function is_int;
+use function is_string;
 
 class Feature extends GeoJSONAbstract{
 
@@ -26,32 +28,18 @@ class Feature extends GeoJSONAbstract{
 		'GeometryCollection',
 	];
 
-	/**
-	 * @var array
-	 */
-	protected $coords;
-
-	/**
-	 * @var string
-	 */
-	protected $type;
-
-	/**
-	 * @var array
-	 */
-	protected $properties;
-
-	/**
-	 * @var int|string
-	 */
+	protected array  $coords;
+	protected string $type;
+	protected array  $properties;
+	/** @var int|string */
 	protected $id;
 
 	/**
 	 * Feature constructor.
 	 *
-	 * @param array|null  $coords
-	 * @param string|null $type
-	 * @param int|null    $id
+	 * @param array|null      $coords
+	 * @param string|null     $type
+	 * @param int|string|null $id
 	 *
 	 * @throws \chillerlan\GeoJSON\GeoJSONException
 	 */
@@ -73,10 +61,6 @@ class Feature extends GeoJSONAbstract{
 	}
 
 	/**
-	 * @param array  $coords
-	 * @param string $type
-	 *
-	 * @return \chillerlan\GeoJSON\Feature
 	 * @throws \chillerlan\GeoJSON\GeoJSONException
 	 */
 	public function setGeometry(array $coords, string $type):Feature{
@@ -96,9 +80,7 @@ class Feature extends GeoJSONAbstract{
 	}
 
 	/**
-	 * @param array $properties
 	 *
-	 * @return \chillerlan\GeoJSON\Feature
 	 */
 	public function setProperties(array $properties):Feature{
 		$this->properties = $properties;
@@ -109,12 +91,11 @@ class Feature extends GeoJSONAbstract{
 	/**
 	 * @param int|string $id
 	 *
-	 * @return \chillerlan\GeoJSON\Feature
 	 * @throws \chillerlan\GeoJSON\GeoJSONException
 	 */
 	public function setID($id):Feature{
 
-		if(empty($id) || (!is_string($id) && !is_numeric($id))){
+		if(!is_string($id) && !is_int($id)){
 			throw new GeoJSONException('invalid id');
 		}
 
@@ -124,7 +105,6 @@ class Feature extends GeoJSONAbstract{
 	}
 
 	/**
-	 * @return array
 	 * @throws \chillerlan\GeoJSON\GeoJSONException
 	 */
 	public function toArray():array{
@@ -149,7 +129,7 @@ class Feature extends GeoJSONAbstract{
 
 		if(!empty($this->id)){
 			$arr['properties']['id'] = $this->id; // leaflet
-#			$arr['id'] = $this->id; // GMaps
+#			$arr['id']               = $this->id; // GMaps
 		}
 
 		return $arr;

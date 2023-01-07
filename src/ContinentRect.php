@@ -2,9 +2,7 @@
 /**
  * Class ContinentRect
  *
- * @filesource   ContinentRect.php
  * @created      25.06.2018
- * @package      chillerlan\GeoJSON
  * @author       smiley <smiley@chillerlan.net>
  * @copyright    2018 smiley
  * @license      MIT
@@ -14,10 +12,7 @@ namespace chillerlan\GeoJSON;
 
 class ContinentRect{
 
-	/**
-	 * @var array
-	 */
-	protected $rect;
+	protected array $rect;
 
 	/**
 	 * ContinentRect constructor.
@@ -30,8 +25,6 @@ class ContinentRect{
 
 	/**
 	 * returns bounds for L.LatLngBounds() (NE/SW corners)
-	 *
-	 * @return array
 	 */
 	public function getBounds():array{
 		return [
@@ -42,8 +35,6 @@ class ContinentRect{
 
 	/**
 	 * returns the center of the rectangle
-	 *
-	 * @return array
 	 */
 	public function getCenter():array{
 		return [
@@ -54,8 +45,6 @@ class ContinentRect{
 
 	/**
 	 * returns a polygon made of the rectangles corners
-	 *
-	 * @return array
 	 */
 	public function getPoly():array{
 		return [[

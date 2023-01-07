@@ -2,9 +2,7 @@
 /**
  * Class FeatureCollectionTest
  *
- * @filesource   FeatureCollectionTest.php
  * @created      25.06.2018
- * @package      chillerlan\GeoJSONTest
  * @author       smiley <smiley@chillerlan.net>
  * @copyright    2018 smiley
  * @license      MIT
@@ -12,23 +10,20 @@
 
 namespace chillerlan\GeoJSONTest;
 
-use chillerlan\GeoJSON\{Feature, FeatureCollection};
+use chillerlan\GeoJSON\{Feature, FeatureCollection, GeoJSONException};
 use PHPUnit\Framework\TestCase;
 
 class FeatureCollectionTest extends TestCase{
 
-	/**
-	 * @var \chillerlan\GeoJSON\FeatureCollection
-	 */
-	protected $geoJSONFeatureCollection;
+	protected FeatureCollection $geoJSONFeatureCollection;
 
-	protected function setUp(){
+	protected function setUp():void{
 		$f1 = new Feature([1,1], 'Point', 1);
 
 		$this->geoJSONFeatureCollection = new FeatureCollection([$f1]);
 	}
 
-	public function testToArray(){
+	public function testToArray():void{
 		$f2    = new Feature([2,2], 'Point', 2);
 		$bbox  = [-10, -10, 10, 10];
 
@@ -43,20 +38,21 @@ class FeatureCollectionTest extends TestCase{
 
 		$json = $this->geoJSONFeatureCollection->toJSON();
 
-		$this->assertSame('{"type":"FeatureCollection","bbox":[-10,-10,10,10],"features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[1,1]},"properties":{"id":1}},{"type":"Feature","geometry":{"type":"Point","coordinates":[2,2]},"properties":{"id":2}}]}', $json);
+		$this->assertSame('{"type":"FeatureCollection","bbox":[-10,-10,10,10],"features":['
+			.'{"type":"Feature","geometry":{"type":"Point","coordinates":[1,1]},"properties":{"id":1}},'
+			.'{"type":"Feature","geometry":{"type":"Point","coordinates":[2,2]},"properties":{"id":2}}]}', $json);
 	}
 
-	public function testClearFeatures(){
+	public function testClearFeatures():void{
 		$this->geoJSONFeatureCollection->clearFeatures();
 
 		$this->assertSame('{"type":"FeatureCollection","features":[]}', $this->geoJSONFeatureCollection->toJSON());
 	}
 
-	/**
-	 * @expectedException \chillerlan\GeoJSON\GeoJSONException
-	 * @expectedExceptionMessage invalid bounding box array
-	 */
-	public function testSetBboxInvalidBox(){
+	public function testSetBboxInvalidBox():void{
+		$this->expectException(GeoJSONException::class);
+		$this->expectExceptionMessage('invalid bounding box array');
+
 		$this->geoJSONFeatureCollection->setBbox([]);
 	}
 
