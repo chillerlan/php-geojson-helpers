@@ -20,29 +20,34 @@ class PolylineSimplifyer{
 
 	/**
 	 * PolylineSimplifyer constructor.
+	 *
+	 * @throws \chillerlan\GeoJSON\GeoJSONException
 	 */
 	public function __construct(array $polylineCoords){
-		$this->coords = $polylineCoords;
+
+		if(count($polylineCoords) < 2){
+			throw new GeoJSONException('not enough points');
+		}
+
+		$this->coords = array_values($polylineCoords);
+
+		foreach($this->coords as $i => $coord){
+
+			if(!is_array($coord) || count($coord) < 2){
+				throw new GeoJSONException('invalid coords found');
+			}
+
+			$this->coords[$i] = array_values($coord);
+		}
+
 	}
 
 	/**
 	 * @throws \chillerlan\GeoJSON\GeoJSONException
 	 */
 	public function simplify(float $tolerance = 1, bool $highestQuality = false):array{
-		$coords = array_values($this->coords ?? []);
-
-		if(count($coords) < 2){
-			throw new GeoJSONException('not enough points');
-		}
-
-		foreach($this->coords as $coord){
-			if(!is_array($coord) || count($coord) < 2){
-				throw new GeoJSONException('invalid coords found');
-			}
-		}
-
 		$sqTolerance = $tolerance * $tolerance;
-		$points      = $highestQuality ? $coords : $this->simplifyRadialDist($coords, $sqTolerance);
+		$points      = $highestQuality ? $this->coords : $this->simplifyRadialDist($sqTolerance);
 
 		return $this->simplifyDouglasPeucker($points, $sqTolerance);
 	}
@@ -50,16 +55,16 @@ class PolylineSimplifyer{
 	/**
 	 * basic distance-based simplification
 	 */
-	protected function simplifyRadialDist(array $points, float $sqTolerance):array{
-		$prevPoint = $points[0];
+	protected function simplifyRadialDist(float $sqTolerance):array{
+		$prevPoint = $this->coords[0];
 		$newPoints = [$prevPoint];
 		$point     = null;
-		$len       = count($points);
+		$len       = count($this->coords);
 
 		for($i = 1; $i < $len; $i++){
-			$point = $points[$i];
+			$point = $this->coords[$i];
 
-			if($this->getSqDist(array_values($point), array_values($prevPoint)) > $sqTolerance){
+			if($this->getSqDist($point, $prevPoint) > $sqTolerance){
 				$newPoints[] = $point;
 				$prevPoint   = $point;
 			}
@@ -101,11 +106,7 @@ class PolylineSimplifyer{
 			$maxSqDist = 0;
 
 			for($i = $first + 1; $i < $last; $i++){
-				$sqDist = $this->getSqSegDist(
-					array_values($points[$i]),
-					array_values($points[$first]),
-					array_values($points[$last])
-				);
+				$sqDist = $this->getSqSegDist($points[$i], $points[$first], $points[$last]);
 
 				if($sqDist > $maxSqDist){
 					$index     = $i;
