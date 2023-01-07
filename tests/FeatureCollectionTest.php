@@ -12,6 +12,7 @@ namespace chillerlan\GeoJSONTest;
 
 use chillerlan\GeoJSON\{Feature, FeatureCollection, GeoJSONException};
 use PHPUnit\Framework\TestCase;
+use function json_encode;
 
 class FeatureCollectionTest extends TestCase{
 
@@ -36,11 +37,14 @@ class FeatureCollectionTest extends TestCase{
 		$this->assertSame(1, $arr['features'][0]['properties']['id']);
 		$this->assertSame(2, $arr['features'][1]['properties']['id']);
 
-		$json = $this->geoJSONFeatureCollection->toJSON();
-
-		$this->assertSame('{"type":"FeatureCollection","bbox":[-10,-10,10,10],"features":['
+		$expected = '{"type":"FeatureCollection","bbox":[-10,-10,10,10],"features":['
 			.'{"type":"Feature","geometry":{"type":"Point","coordinates":[1,1]},"properties":{"id":1}},'
-			.'{"type":"Feature","geometry":{"type":"Point","coordinates":[2,2]},"properties":{"id":2}}]}', $json);
+			.'{"type":"Feature","geometry":{"type":"Point","coordinates":[2,2]},"properties":{"id":2}}]}';
+
+		// legacy toJSON method
+		$this->assertSame($expected, $this->geoJSONFeatureCollection->toJSON());
+		// JsonSerializable
+		$this->assertSame($expected, json_encode($this->geoJSONFeatureCollection));
 	}
 
 	public function testClearFeatures():void{
