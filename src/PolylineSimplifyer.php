@@ -12,7 +12,7 @@
 
 namespace chillerlan\GeoJSON;
 
-use function array_fill, array_keys, array_pop, array_push, array_values, count, is_array;
+use function array_fill, array_pop, array_push, array_values, count, is_array;
 
 class PolylineSimplifyer{
 
