@@ -2,8 +2,6 @@
 /**
  * Class FeatureCollection
  *
- * @link https://tools.ietf.org/html/rfc7946
- *
  * @created      25.06.2018
  * @author       smiley <smiley@chillerlan.net>
  * @copyright    2018 smiley
@@ -14,8 +12,12 @@ namespace chillerlan\GeoJSON;
 
 use function array_map;
 
+/**
+ * @see https://www.rfc-editor.org/rfc/rfc7946#section-3.3
+ */
 class FeatureCollection extends GeoJSONAbstract{
 
+	/** @var \chillerlan\GeoJSON\Feature[] */
 	protected array $features = [];
 
 	/**
@@ -32,9 +34,7 @@ class FeatureCollection extends GeoJSONAbstract{
 	}
 
 	/**
-	 * @param \chillerlan\GeoJSON\Feature $feature
 	 *
-	 * @return \chillerlan\GeoJSON\FeatureCollection
 	 */
 	public function addFeature(Feature $feature):FeatureCollection{
 		$this->features[] = $feature;
@@ -43,9 +43,7 @@ class FeatureCollection extends GeoJSONAbstract{
 	}
 
 	/**
-	 * @param Feature[] $features
-	 *
-	 * @return \chillerlan\GeoJSON\FeatureCollection
+	 * @param \chillerlan\GeoJSON\Feature[] $features
 	 */
 	public function addFeatures(iterable $features):FeatureCollection{
 
@@ -59,7 +57,7 @@ class FeatureCollection extends GeoJSONAbstract{
 	}
 
 	/**
-	 * @return \chillerlan\GeoJSON\FeatureCollection
+	 *
 	 */
 	public function clearFeatures():FeatureCollection{
 		$this->features = [];
@@ -68,7 +66,7 @@ class FeatureCollection extends GeoJSONAbstract{
 	}
 
 	/**
-	 * @return array
+	 *
 	 */
 	public function toArray():array{
 		$arr = ['type' => 'FeatureCollection'];

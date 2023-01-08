@@ -2,8 +2,6 @@
 /**
  * Class Feature
  *
- * @link https://tools.ietf.org/html/rfc7946
- *
  * @created      25.06.2018
  * @author       smiley <smiley@chillerlan.net>
  * @copyright    2018 smiley
@@ -16,6 +14,9 @@ use function in_array;
 use function is_int;
 use function is_string;
 
+/**
+ * @see https://www.rfc-editor.org/rfc/rfc7946#section-3.2
+ */
 class Feature extends GeoJSONAbstract{
 
 	public const types = [
@@ -108,15 +109,17 @@ class Feature extends GeoJSONAbstract{
 	 * @throws \chillerlan\GeoJSON\GeoJSONException
 	 */
 	public function toArray():array{
-		$arr = ['type' => 'Feature'];
 
 		if(empty($this->coords) || empty($this->type)){
 			throw new GeoJSONException('invalid feature');
 		}
 
-		$arr['geometry'] = [
-			'type'        => $this->type,
-			'coordinates' => $this->coords,
+		$arr = [
+			'type'     => 'Feature',
+			'geometry' => [
+				'type'        => $this->type,
+				'coordinates' => $this->coords,
+			]
 		];
 
 		if(!empty($this->bbox)){

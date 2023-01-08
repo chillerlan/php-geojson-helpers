@@ -2,8 +2,6 @@
 /**
  * Class PolylineSimplifyer
  *
- * @link https://github.com/mourner/simplify-js
- *
  * @created      04.10.2019
  * @author       smiley <smiley@chillerlan.net>
  * @copyright    2019 smiley
@@ -14,6 +12,9 @@ namespace chillerlan\GeoJSON;
 
 use function array_fill, array_pop, array_push, array_values, count, is_array;
 
+/**
+ * @see https://github.com/mourner/simplify-js
+ */
 class PolylineSimplifyer{
 
 	protected array $coords;
