@@ -48,6 +48,8 @@ Profit!
 
 ## Usage
 
+### `FeatureCollection`
+
 ```php
 $featureCollection = (new FeatureCollection)->setBbox([0, 0, 1024, 1024]);
 
@@ -83,6 +85,15 @@ $json = json_encode($featureCollection);
         }
     ]
 }
+```
+
+### `PolylineSimplifyer`
+
+```php
+$polylineCoords = [[11, 12], [21, 22], [31, 32], /* ... */];
+
+$ps             = new PolylineSimplifyer($polylineCoords);
+$simplified     = $ps->simplify(5, true);
 ```
 
 ## API
